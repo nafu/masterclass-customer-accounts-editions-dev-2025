@@ -18,6 +18,9 @@ export default function () {
 }
 
 function WishlistedItemsPage() {
+  const { editor } = shopify.extension;
+  const isInEditor = editor?.type === "checkout";
+
   const { id: customerId } = shopify.authenticatedAccount.customer.current;
 
   const [shopData, setShopData] = useState<Shop | null>(null);
@@ -29,7 +32,32 @@ function WishlistedItemsPage() {
     async function run() {
       const shopDataPromise = fetchShopData();
 
-      const products = await fetchProducts(await fetchWishlistedProductIds());
+      const products = isInEditor
+      ? [
+          {
+            id: "1",
+            title: "Product 1",
+            handle: "product-1",
+            priceRange: {
+              minVariantPrice: {
+                amount: 100,
+                currencyCode: "USD",
+              },
+              maxVariantPrice: {
+                amount: 100,
+                currencyCode: "USD",
+              },
+            },
+            images: {
+              nodes: [
+                {
+                  url: "https://placehold.co/150",
+                },
+              ],
+            },
+          },
+        ]
+      : await fetchProducts(await fetchWishlistedProductIds());
 
       setShopData(await shopDataPromise);
       setWishlist(products);
