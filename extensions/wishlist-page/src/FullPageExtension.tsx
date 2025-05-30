@@ -33,31 +33,8 @@ function WishlistedItemsPage() {
       const shopDataPromise = fetchShopData();
 
       const products = isInEditor
-      ? [
-          {
-            id: "1",
-            title: "Product 1",
-            handle: "product-1",
-            priceRange: {
-              minVariantPrice: {
-                amount: 100,
-                currencyCode: "USD",
-              },
-              maxVariantPrice: {
-                amount: 100,
-                currencyCode: "USD",
-              },
-            },
-            images: {
-              nodes: [
-                {
-                  url: "https://placehold.co/150",
-                },
-              ],
-            },
-          },
-        ]
-      : await fetchProducts(await fetchWishlistedProductIds());
+        ? await fetchPreviewProducts()
+        : await fetchProducts(await fetchWishlistedProductIds());
 
       setShopData(await shopDataPromise);
       setWishlist(products);
@@ -152,4 +129,20 @@ async function fetchProducts(productIds?: string[]) {
   const data = await response.json();
 
   return data?.data?.nodes.filter((node) => node !== null);
+}
+
+async function fetchPreviewProducts() {
+  const response = await fetch(
+    "shopify://storefront/api/unstable/graphql.json",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(getFirst3ProductsQuery()),
+    },
+  );
+
+  const data = await response.json();
+  return data?.data?.products?.nodes.filter((node) => node !== null);
 }
