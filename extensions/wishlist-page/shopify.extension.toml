@@ -1,0 +1,16 @@
+
+api_version = "2025-10"
+[[extensions]]
+name = "Wishlist Page"
+handle = "wishlist-page"
+type = "ui_extension"
+uid = "f4478831-cbc1-4bfc-a33e-d58cada1df31"
+
+[[extensions.targeting]]
+module = "./src/FullPageExtension.tsx"
+target = "customer-account.page.render"
+
+[extensions.capabilities]
+# Gives your extension access to directly query Shopify’s storefront API.
+# https://shopify.dev/docs/api/customer-account-ui-extensions/unstable/configuration#api-access
+api_access = true

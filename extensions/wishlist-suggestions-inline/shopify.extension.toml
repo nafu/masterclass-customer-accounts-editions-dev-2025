@@ -1,0 +1,34 @@
+# Learn more about configuring your Customer account UI extension:
+# https://shopify.dev/api/customer-account-ui-extensions/unstable/configuration
+
+# The version of APIs your extension will receive. Learn more:
+# https://shopify.dev/docs/api/usage/versioning
+api_version = "2025-10"
+
+[[extensions]]
+name = "Wishlist Suggestions"
+handle = "wishlist-suggestions-inline"
+uid = "c7670e54-45bc-521f-c0e4-6d1ec35c2a24b4607541"
+type = "ui_extension"
+
+
+# Controls where in Shopify your extension will be injected,
+# and the file that contains your extension’s source code. Learn more:
+# https://shopify.dev/docs/api/customer-account-ui-extensions/unstable/extension-targets-overview
+
+[[extensions.targeting]]
+# module = "./src/OrderListPageExtension.tsx"
+module = "./src/OrderListPageExtension.tsx"
+target = "customer-account.order-index.block.render"
+default_placement = "ORDER_INDEX"
+
+[extensions.capabilities]
+# Gives your extension access to directly query Shopify’s storefront API.
+# https://shopify.dev/docs/api/customer-account-ui-extensions/unstable/configuration#api-access
+api_access = true
+
+[[extensions.settings.fields]]
+key = "product_tag"
+type = "single_line_text_field"
+name = "Product tag (required)"
+description = "Enter the product tag used to suggest products."
